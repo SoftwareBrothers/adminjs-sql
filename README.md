@@ -33,7 +33,7 @@ const start = async () => {
   const app = express()
 
   const db = await new Adapter('postgresql', {
-    connectionString: '<your database connection string>',
+    connectionString: '<your database connection string>', //  postgresql://[user]:[password]@[netloc]:[port]/[dbname]
     database: '<your database name>',
   }).init();
 

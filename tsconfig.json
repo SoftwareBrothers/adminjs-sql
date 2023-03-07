@@ -1,11 +1,9 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "moduleResolution": "nodenext",
+    "module": "nodenext",
     "target": "es2018",
-    "lib": [
-      "es2018",
-      "DOM"
-    ],
+    "lib": ["es2018", "DOM"],
     "skipLibCheck": true,
     "sourceMap": true,
     "noImplicitAny": false,
@@ -18,11 +16,6 @@
     "experimentalDecorators": true,
     "baseUrl": "."
   },
-  "include": [
-    "./src/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "lib"
-  ]
+  "include": ["./src/**/*.ts"],
+  "exclude": ["node_modules", "lib"]
 }

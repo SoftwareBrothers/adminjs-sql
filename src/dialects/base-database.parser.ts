@@ -2,11 +2,11 @@
 /* eslint-disable class-methods-use-this */
 import KnexConnection, { Knex } from 'knex';
 
-import { DatabaseMetadata, ResourceMetadata } from '../metadata';
+import { DatabaseMetadata, ResourceMetadata } from '../metadata/index.js';
 
-import { ConnectionOptions } from './types/index';
+import { ConnectionOptions } from './types/index.js';
 
-import { DatabaseDialect } from './index';
+import { DatabaseDialect } from './index.js';
 
 export class BaseDatabaseParser {
   protected knex: Knex;

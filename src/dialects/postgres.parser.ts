@@ -1,60 +1,60 @@
 import { PropertyType } from 'adminjs';
 
-import { DatabaseMetadata, ResourceMetadata } from '../metadata';
-import { ColumnInfo, Property } from '../Property';
+import { DatabaseMetadata, ResourceMetadata } from '../metadata/index.js';
+import { ColumnInfo, Property } from '../Property.js';
 
-import { BaseDatabaseParser } from './base-database.parser';
+import { BaseDatabaseParser } from './base-database.parser.js';
 
 const pgArrayAggToArray = (agg: string) => agg.replace(/{/g, '').replace(/}/g, '').split(',');
 
 const getColumnType = (dbType: string): PropertyType => {
   switch (dbType) {
-  case 'uuid': return 'uuid';
-  case 'bigint':
-  case 'int8':
-  case 'bigserial':
-  case 'serial8':
-  case 'integer':
-  case 'int':
-  case 'int4':
-  case 'smallint':
-  case 'int2':
-  case 'serial':
-  case 'serial4':
-  case 'smallserial':
-  case 'serial2':
-    return 'number';
-  case 'double precision':
-  case 'float8':
-  case 'numeric':
-  case 'decimal':
-  case 'real':
-  case 'float4':
-    return 'float';
-  case 'money':
-    return 'currency';
-  case 'boolean':
-    return 'boolean';
-  case 'time':
-  case 'time with time zone':
-  case 'timetz':
-  case 'time without time zone':
-  case 'timestamp':
-  case 'timestamp with time zone':
-  case 'timestamptz':
-  case 'timestamp without time zone':
-    return 'datetime';
-  case 'date':
-    return 'date';
-  case 'json':
-  case 'jsonb':
-    return 'key-value';
-  case 'text':
-  case 'character varying':
-  case 'char':
-  case 'varchar':
-  default:
-    return 'string';
+    case 'uuid': return 'uuid';
+    case 'bigint':
+    case 'int8':
+    case 'bigserial':
+    case 'serial8':
+    case 'integer':
+    case 'int':
+    case 'int4':
+    case 'smallint':
+    case 'int2':
+    case 'serial':
+    case 'serial4':
+    case 'smallserial':
+    case 'serial2':
+      return 'number';
+    case 'double precision':
+    case 'float8':
+    case 'numeric':
+    case 'decimal':
+    case 'real':
+    case 'float4':
+      return 'float';
+    case 'money':
+      return 'currency';
+    case 'boolean':
+      return 'boolean';
+    case 'time':
+    case 'time with time zone':
+    case 'timetz':
+    case 'time without time zone':
+    case 'timestamp':
+    case 'timestamp with time zone':
+    case 'timestamptz':
+    case 'timestamp without time zone':
+      return 'datetime';
+    case 'date':
+      return 'date';
+    case 'json':
+    case 'jsonb':
+      return 'key-value';
+    case 'text':
+    case 'character varying':
+    case 'char':
+    case 'varchar':
+    default:
+      return 'string';
   }
 };
 

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable class-methods-use-this */
-import KnexConnection, { Knex } from 'knex';
+import { Knex, knex as KnexConnection } from 'knex';
 
 import { DatabaseMetadata, ResourceMetadata } from '../metadata/index.js';
 

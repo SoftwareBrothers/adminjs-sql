@@ -3,7 +3,7 @@ import {
   BaseResource,
   Filter,
   ParamsType,
-  SupportedDatabasesType
+  SupportedDatabasesType,
 } from 'adminjs';
 import { Knex } from 'knex';
 

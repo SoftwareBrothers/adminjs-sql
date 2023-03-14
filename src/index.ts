@@ -7,5 +7,4 @@ export { Property } from './Property.js';
 export { Resource } from './Resource.js';
 export { Adapter };
 
-
 export default Adapter;

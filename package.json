@@ -48,7 +48,7 @@
   },
   "dependencies": {
     "knex": "^2.4.2",
-    "pg": "^8.8.0"
+    "pg": "^8.10.0"
   },
   "peerDependencies": {
     "adminjs": "^6.0.0"

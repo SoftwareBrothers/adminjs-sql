@@ -2,8 +2,8 @@
   "compilerOptions": {
     "moduleResolution": "nodenext",
     "module": "nodenext",
-    "target": "es2018",
-    "lib": ["es2018", "DOM"],
+    "target": "esnext",
+    "lib": ["esnext", "DOM"],
     "skipLibCheck": true,
     "sourceMap": true,
     "noImplicitAny": false,

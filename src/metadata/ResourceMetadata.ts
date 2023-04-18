@@ -1,7 +1,7 @@
 import { Knex } from 'knex';
 
-import { DatabaseDialect } from '../dialects';
-import { Property } from '../Property';
+import { DatabaseDialect } from '../dialects/index.js';
+import { Property } from '../Property.js';
 
 export class ResourceMetadata {
   public idProperty: Property;

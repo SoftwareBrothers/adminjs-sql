@@ -1,8 +1,8 @@
-import { ConnectionOptions } from './types/index';
-import { PostgresParser } from './postgres.parser';
-import { BaseDatabaseParser } from './base-database.parser';
+import { BaseDatabaseParser } from './base-database.parser.js';
+import { PostgresParser } from './postgres.parser.js';
+import { ConnectionOptions } from './types/index.js';
 
-export * from './types';
+export * from './types/index.js';
 
 export type DatabaseDialect = 'postgresql'
 

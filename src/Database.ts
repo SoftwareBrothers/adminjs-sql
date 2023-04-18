@@ -1,7 +1,7 @@
 import { BaseDatabase } from 'adminjs';
 
-import { DatabaseMetadata } from './metadata';
-import { Resource } from './Resource';
+import { DatabaseMetadata } from './metadata/index.js';
+import { Resource } from './Resource.js';
 
 export class Database extends BaseDatabase {
   public static override isAdapterFor(info: any): boolean {

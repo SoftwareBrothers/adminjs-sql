@@ -1,8 +1,8 @@
-import { DatabaseDialect, parse } from './dialects';
-import { ConnectionOptions } from './dialects/types';
-import { Resource as SqlResource } from './Resource';
-import { Database as SqlDatabase } from './Database';
-import { Property as SqlProperty } from './Property';
+import { Database as SqlDatabase } from './Database.js';
+import { DatabaseDialect, parse } from './dialects/index.js';
+import { ConnectionOptions } from './dialects/types/index.js';
+import { Property as SqlProperty } from './Property.js';
+import { Resource as SqlResource } from './Resource.js';
 
 export class Adapter {
   public static Resource: SqlResource;

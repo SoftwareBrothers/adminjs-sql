@@ -7,8 +7,8 @@ import {
 } from 'adminjs';
 import { Knex } from 'knex';
 
-import { ResourceMetadata } from './metadata';
-import { Property } from './Property';
+import { ResourceMetadata } from './metadata/index.js';
+import { Property } from './Property.js';
 
 export class Resource extends BaseResource {
   static override isAdapterFor(resource: any): boolean {

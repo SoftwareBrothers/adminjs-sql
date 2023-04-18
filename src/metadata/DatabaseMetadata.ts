@@ -1,4 +1,4 @@
-import { ResourceMetadata } from './ResourceMetadata';
+import { ResourceMetadata } from './ResourceMetadata.js';
 
 export class DatabaseMetadata {
   public readonly database: string;

@@ -1,9 +1,9 @@
 import { PropertyType } from 'adminjs';
 
-import { DatabaseMetadata, ResourceMetadata } from '../metadata';
-import { ColumnInfo, Property } from '../Property';
+import { DatabaseMetadata, ResourceMetadata } from '../metadata/index.js';
+import { ColumnInfo, Property } from '../Property.js';
 
-import { BaseDatabaseParser } from './base-database.parser';
+import { BaseDatabaseParser } from './base-database.parser.js';
 
 const pgArrayAggToArray = (agg: string) => agg.replace(/{/g, '').replace(/}/g, '').split(',');
 

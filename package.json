@@ -32,7 +32,7 @@
     "@semantic-release/git": "^10.0.1",
     "@typescript-eslint/eslint-plugin": "^5.55.0",
     "@typescript-eslint/parser": "^5.55.0",
-    "adminjs": "^7.0.0-beta-v7.1",
+    "adminjs": "^7.0.0",
     "eslint": "^8.36.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-import": "^2.27.5",
@@ -51,7 +51,7 @@
     "pg": "^8.10.0"
   },
   "peerDependencies": {
-    "adminjs": ">=6.0.0"
+    "adminjs": "^7.0.0"
   },
   "husky": {
     "hooks": {

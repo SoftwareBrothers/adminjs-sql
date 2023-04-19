@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable class-methods-use-this */
-import { Knex, knex as KnexConnection } from 'knex';
+import type { Knex } from 'knex';
+import KnexModule from 'knex';
 
 import { DatabaseMetadata, ResourceMetadata } from '../metadata/index.js';
-
 import { ConnectionOptions } from './types/index.js';
-
 import { DatabaseDialect } from './index.js';
+
+const KnexConnection = KnexModule.knex;
 
 export class BaseDatabaseParser {
   protected knex: Knex;

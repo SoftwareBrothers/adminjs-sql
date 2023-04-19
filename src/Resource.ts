@@ -5,7 +5,7 @@ import {
   ParamsType,
   SupportedDatabasesType,
 } from 'adminjs';
-import { Knex } from 'knex';
+import type { Knex } from 'knex';
 
 import { ResourceMetadata } from './metadata/index.js';
 import { Property } from './Property.js';

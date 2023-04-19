@@ -1,4 +1,4 @@
-import { Knex } from 'knex';
+import type { Knex } from 'knex';
 
 import { DatabaseDialect } from '../dialects/index.js';
 import { Property } from '../Property.js';

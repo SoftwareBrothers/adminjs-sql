@@ -42,6 +42,10 @@ export class BaseDatabaseParser {
     throw new Error('Implement "parse" method for your database parser!');
   }
 
+  public async getSchemas(): Promise<string[]> {
+    throw new Error('Implement "getSchema" method for your database parser!');
+  }
+
   public async getTables(): Promise<string[]> {
     throw new Error('Implement "getTables" method for your database parser!');
   }

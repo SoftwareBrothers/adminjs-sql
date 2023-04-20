@@ -73,6 +73,7 @@ export class PostgresParser extends BaseDatabaseParser {
   public static dialects = ['postgresql' as const];
 
   public async parse() {
+    const schemaName = await this.getSchemas();
     const tableNames = await this.getTables();
     const resources = await this.getResources(
       tableNames,
@@ -85,11 +86,10 @@ export class PostgresParser extends BaseDatabaseParser {
     return new DatabaseMetadata(this.connectionOptions.database, resourceMap);
   }
 
-  public async getTables() {
-    const query = await this.knex.raw(`
+  public async getTables(schema = 'public') {
+    const query = await this.knex.schema.withSchema(schema).raw(`
       SELECT table_name
       FROM information_schema.tables
-      WHERE table_schema='public'
         AND table_type='BASE TABLE';
     `);
 

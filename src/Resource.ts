@@ -27,6 +27,8 @@ export class Resource extends BaseResource {
 
   private tableName: string;
 
+  private schemaName = 'public';
+
   private _database: string;
 
   private _properties: Property[];
@@ -36,6 +38,7 @@ export class Resource extends BaseResource {
   constructor(info: ResourceMetadata) {
     super(info.tableName);
     this.knex = info.knex;
+    this.schemaName = info.schema;
     this.tableName = info.tableName;
     this._database = info.database;
     this._properties = info.properties;
@@ -97,12 +100,12 @@ export class Resource extends BaseResource {
   }
 
   override async findOne(id: string): Promise<BaseRecord | null> {
-    const res = await this.knex(this.tableName).where(this.idColumn, id);
+    const res = await this.knex(this.tableName).withSchema(this.schemaName).where(this.idColumn, id);
     return res[0] ? this.build(res[0]) : null;
   }
 
   override async findMany(ids: (string | number)[]): Promise<BaseRecord[]> {
-    const res = await this.knex(this.tableName).whereIn(this.idColumn, ids);
+    const res = await this.knex(this.tableName).withSchema(this.schemaName).whereIn(this.idColumn, ids);
     return res.map((r) => this.build(r));
   }
 
@@ -111,7 +114,7 @@ export class Resource extends BaseResource {
   }
 
   override async create(params: Record<string, any>): Promise<ParamsType> {
-    await this.knex(this.tableName).insert(params);
+    await this.knex(this.tableName).withSchema(this.schemaName).insert(params);
 
     return params;
   }
@@ -124,16 +127,16 @@ export class Resource extends BaseResource {
       .from(this.tableName)
       .update(params)
       .where(this.idColumn, id);
-    const [row] = await this.knex(this.tableName).where(this.idColumn, id);
+    const [row] = await this.knex(this.tableName).withSchema(this.schemaName).where(this.idColumn, id);
     return row;
   }
 
   override async delete(id: string): Promise<void> {
-    await this.knex.from(this.tableName).delete().where(this.idColumn, id);
+    await this.knex.withSchema(this.schemaName).from(this.tableName).delete().where(this.idColumn, id);
   }
 
   private filterQuery(filter: Filter | undefined): Knex.QueryBuilder {
-    const q = this.knex(this.tableName);
+    const q = this.knex(this.tableName).withSchema(this.schemaName);
 
     if (!filter) {
       return q;

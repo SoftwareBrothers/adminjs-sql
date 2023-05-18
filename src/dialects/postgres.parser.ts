@@ -73,11 +73,9 @@ export class PostgresParser extends BaseDatabaseParser {
   public static dialects = ['postgresql' as const];
 
   public async parse() {
-    const schemaName = await this.getSchemas();
-    const tableNames = await this.getTables();
-    const resources = await this.getResources(
-      tableNames,
-    );
+    const schemaName = await this.getSchema();
+    const tableNames = await this.getTables(schemaName);
+    const resources = await this.getResources(tableNames, schemaName);
     const resourceMap = new Map<string, ResourceMetadata>();
     resources.forEach((r) => {
       resourceMap.set(r.tableName, r);
@@ -86,26 +84,33 @@ export class PostgresParser extends BaseDatabaseParser {
     return new DatabaseMetadata(this.connectionOptions.database, resourceMap);
   }
 
-  public async getTables(schema = 'public') {
-    const query = await this.knex.schema.withSchema(schema).raw(`
+  public async getSchema() {
+    const query = await this.knex.raw('SELECT current_schema() AS schema_name');
+    const result = await query;
+    return result.rows?.schema_name.toString();
+  }
+
+  public async getTables(schemaName) {
+    const query = await this.knex.schema.withSchema(schemaName).raw(`
       SELECT table_name
       FROM information_schema.tables
         AND table_type='BASE TABLE';
     `);
 
     const result = await query;
+    const rows = result[0];
 
-    if (!result?.rows?.length) {
+    if (!rows) {
       // eslint-disable-next-line no-console
       console.warn(`No tables in database ${this.connectionOptions.database}`);
 
       return [];
     }
 
-    return result.rows.map(({ table_name: table }) => table);
+    return rows.map(({ table_name: table }) => table);
   }
 
-  public async getResources(tables: string[]) {
+  public async getResources(tables: string[], schemaName: string) {
     const resources = await Promise.all(
       tables.map(async (tableName) => {
         try {
@@ -113,6 +118,7 @@ export class PostgresParser extends BaseDatabaseParser {
             this.dialect,
             this.knex,
             this.connectionOptions.database,
+            schemaName,
             tableName,
             await this.getProperties(tableName),
           );

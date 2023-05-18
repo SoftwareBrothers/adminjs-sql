@@ -42,15 +42,15 @@ export class BaseDatabaseParser {
     throw new Error('Implement "parse" method for your database parser!');
   }
 
-  public async getSchemas(): Promise<string[]> {
+  public async getSchema(): Promise<string> {
     throw new Error('Implement "getSchema" method for your database parser!');
   }
 
-  public async getTables(): Promise<string[]> {
+  public async getTables(schemaName: string): Promise<string[]> {
     throw new Error('Implement "getTables" method for your database parser!');
   }
 
-  public async getResources(tables: string[]): Promise<ResourceMetadata[]> {
+  public async getResources(tables: string[], schemaName: string): Promise<ResourceMetadata[]> {
     throw new Error('Implement "getResources" method for your database parser!');
   }
 

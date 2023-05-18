@@ -38,7 +38,7 @@ export class Resource extends BaseResource {
   constructor(info: ResourceMetadata) {
     super(info.tableName);
     this.knex = info.knex;
-    this.schemaName = info.schema;
+    this.schemaName = info.schemaName;
     this.tableName = info.tableName;
     this._database = info.database;
     this._properties = info.properties;

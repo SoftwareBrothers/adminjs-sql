@@ -87,27 +87,28 @@ export class PostgresParser extends BaseDatabaseParser {
   public async getSchema() {
     const query = await this.knex.raw('SELECT current_schema() AS schema_name');
     const result = await query;
-    return result.rows?.schema_name.toString();
+
+    return result.rows?.[0]?.schema_name?.toString() ?? 'public';
   }
 
-  public async getTables(schemaName) {
-    const query = await this.knex.schema.withSchema(schemaName).raw(`
+  public async getTables(schemaName: string) {
+    const query = await this.knex.raw(`
       SELECT table_name
       FROM information_schema.tables
-        AND table_type='BASE TABLE';
+      WHERE table_type='BASE TABLE'
+      AND table_schema='${schemaName}'
     `);
 
     const result = await query;
-    const rows = result[0];
 
-    if (!rows) {
+    if (!result?.rows?.length) {
       // eslint-disable-next-line no-console
       console.warn(`No tables in database ${this.connectionOptions.database}`);
 
       return [];
     }
 
-    return rows.map(({ table_name: table }) => table);
+    return result.rows.map(({ table_name: table }) => table);
   }
 
   public async getResources(tables: string[], schemaName: string) {

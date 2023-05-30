@@ -27,7 +27,7 @@ export class Resource extends BaseResource {
 
   private tableName: string;
 
-  private schemaName = 'public';
+  private schemaName: string | null;
 
   private _database: string;
 
@@ -100,12 +100,14 @@ export class Resource extends BaseResource {
   }
 
   override async findOne(id: string): Promise<BaseRecord | null> {
-    const res = await this.knex(this.tableName).withSchema(this.schemaName).where(this.idColumn, id);
+    const knex = this.schemaName ? this.knex(this.tableName).withSchema(this.schemaName) : this.knex(this.tableName);
+    const res = await knex.where(this.idColumn, id);
     return res[0] ? this.build(res[0]) : null;
   }
 
   override async findMany(ids: (string | number)[]): Promise<BaseRecord[]> {
-    const res = await this.knex(this.tableName).withSchema(this.schemaName).whereIn(this.idColumn, ids);
+    const knex = this.schemaName ? this.knex(this.tableName).withSchema(this.schemaName) : this.knex(this.tableName);
+    const res = await knex.whereIn(this.idColumn, ids);
     return res.map((r) => this.build(r));
   }
 
@@ -114,7 +116,8 @@ export class Resource extends BaseResource {
   }
 
   override async create(params: Record<string, any>): Promise<ParamsType> {
-    await this.knex(this.tableName).withSchema(this.schemaName).insert(params);
+    const knex = this.schemaName ? this.knex(this.tableName).withSchema(this.schemaName) : this.knex(this.tableName);
+    await knex.insert(params);
 
     return params;
   }
@@ -123,20 +126,26 @@ export class Resource extends BaseResource {
     id: string,
     params: Record<string, any>,
   ): Promise<ParamsType> {
-    await this.knex
+    const knex = this.schemaName ? this.knex.withSchema(this.schemaName) : this.knex;
+
+    await knex
       .from(this.tableName)
       .update(params)
       .where(this.idColumn, id);
-    const [row] = await this.knex(this.tableName).withSchema(this.schemaName).where(this.idColumn, id);
+
+    const knexQb = this.schemaName ? this.knex(this.tableName).withSchema(this.schemaName) : this.knex(this.tableName);
+    const [row] = await knexQb.where(this.idColumn, id);
     return row;
   }
 
   override async delete(id: string): Promise<void> {
-    await this.knex.withSchema(this.schemaName).from(this.tableName).delete().where(this.idColumn, id);
+    const knex = this.schemaName ? this.knex.withSchema(this.schemaName) : this.knex;
+    await knex.from(this.tableName).delete().where(this.idColumn, id);
   }
 
   private filterQuery(filter: Filter | undefined): Knex.QueryBuilder {
-    const q = this.knex(this.tableName).withSchema(this.schemaName);
+    const knex = this.schemaName ? this.knex(this.tableName).withSchema(this.schemaName) : this.knex(this.tableName);
+    const q = knex;
 
     if (!filter) {
       return q;

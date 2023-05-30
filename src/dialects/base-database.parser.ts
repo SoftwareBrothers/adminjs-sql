@@ -5,9 +5,7 @@ import KnexModule from 'knex';
 
 import { DatabaseMetadata, ResourceMetadata } from '../metadata/index.js';
 
-import { ConnectionOptions } from './types/index.js';
-
-import { DatabaseDialect } from './index.js';
+import { ConnectionOptions, DatabaseDialect } from './types/index.js';
 
 const KnexConnection = KnexModule.knex;
 

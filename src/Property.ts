@@ -9,6 +9,7 @@ export type ColumnInfo = {
   isEditable: boolean;
   type: PropertyType;
   referencedTable: string | null;
+  availableValues?: string[] | null;
 }
 
 export class Property extends BaseProperty {
@@ -22,6 +23,8 @@ export class Property extends BaseProperty {
 
   private readonly _name: string;
 
+  private readonly _availableValues?: string[] | null;
+
   constructor(column: ColumnInfo) {
     const {
       name,
@@ -31,6 +34,7 @@ export class Property extends BaseProperty {
       isEditable,
       type,
       referencedTable,
+      availableValues,
     } = column;
 
     super({
@@ -45,6 +49,7 @@ export class Property extends BaseProperty {
     this._isNullable = isNullable;
     this._isEditable = isEditable;
     this._referencedTable = referencedTable;
+    this._availableValues = availableValues;
   }
 
   override isId(): boolean {
@@ -69,7 +74,8 @@ export class Property extends BaseProperty {
 
   // eslint-disable-next-line class-methods-use-this
   override availableValues(): Array<string> | null {
-    // Currently "availableValues" have to be set explicitly via resource options
+    if (this._availableValues) return this._availableValues;
+
     return null;
   }
 

@@ -10,7 +10,7 @@ export class ResourceMetadata {
     public dialect: DatabaseDialect,
     public readonly knex: Knex,
     public readonly database: string,
-    public readonly schemaName: string,
+    public readonly schemaName: string | null,
     public readonly tableName: string,
     public readonly properties: Property[],
   ) {

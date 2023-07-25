@@ -172,27 +172,27 @@ export class MysqlParser extends BaseDatabaseParser {
 
   public async getProperties(table: string) {
     const query = this.knex
-      .from('information_schema.columns as col')
+      .from('information_schema.COLUMNS as col')
       .select(
-        'col.column_name',
-        'col.ordinal_position',
-        'col.column_default',
-        'col.is_nullable',
-        'col.data_type',
-        'col.column_type',
-        'col.column_key',
-        'col.extra',
-        'col.column_comment',
-        'key.referenced_table_name',
-        'key.referenced_column_name',
+        'col.COLUMN_NAME as COLUMN_NAME',
+        'col.ORDINAL_POSITION as ORDINAL_POSITION',
+        'col.COLUMN_DEFAULT as COLUMN_DEFAULT',
+        'col.IS_NULLABLE as IS_NULLABLE',
+        'col.DATA_TYPE as DATA_TYPE',
+        'col.COLUMN_TYPE as COLUMN_TYPE',
+        'col.COLUMN_KEY as COLUMN_KEY',
+        'col.EXTRA as EXTRA',
+        'col.COLUMN_COMMENT as COLUMN_COMMENT',
+        'key.REFERENCED_TABLE_NAME as REFERENCED_TABLE_NAME',
+        'key.REFERENCED_COLUMN_NAME as REFERENCED_COLUMN_NAME',
       )
-      .leftJoin('information_schema.key_column_usage as key', (c) => c
-        .on('key.table_schema', 'col.table_schema')
-        .on('key.table_name', 'col.table_name')
-        .on('key.column_name', 'col.column_name')
-        .on('key.referenced_table_schema', 'col.table_schema'))
-      .where('col.table_schema', this.connectionOptions.database)
-      .where('col.table_name', table);
+      .leftJoin('information_schema.KEY_COLUMN_USAGE as key', (c) => c
+        .on('key.TABLE_SCHEMA', 'col.TABLE_SCHEMA')
+        .on('key.TABLE_NAME', 'col.TABLE_NAME')
+        .on('key.COLUMN_NAME', 'col.COLUMN_NAME')
+        .on('key.REFERENCED_TABLE_SCHEMA', 'col.TABLE_SCHEMA'))
+      .where('col.TABLE_SCHEMA', this.connectionOptions.database)
+      .where('col.TABLE_NAME', table);
 
     const columns = await query;
 

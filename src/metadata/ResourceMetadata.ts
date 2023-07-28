@@ -20,5 +20,6 @@ export class ResourceMetadata {
     }
 
     this.idProperty = idProperty;
+    this.dialect = dialect;
   }
 }

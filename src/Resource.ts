@@ -9,6 +9,7 @@ import type { Knex } from 'knex';
 
 import { ResourceMetadata } from './metadata/index.js';
 import { Property } from './Property.js';
+import { DatabaseDialect } from './dialects/index.js';
 
 export class Resource extends BaseResource {
   static override isAdapterFor(resource: any): boolean {
@@ -22,6 +23,8 @@ export class Resource extends BaseResource {
   }
 
   private knex: Knex;
+
+  private dialect: DatabaseDialect;
 
   private propertyMap = new Map<string, Property>();
 
@@ -46,6 +49,7 @@ export class Resource extends BaseResource {
       this.propertyMap.set(p.path(), p);
     });
     this.idColumn = info.idProperty.path();
+    this.dialect = info.dialect;
   }
 
   override databaseName(): string {
@@ -100,13 +104,17 @@ export class Resource extends BaseResource {
   }
 
   override async findOne(id: string): Promise<BaseRecord | null> {
-    const knex = this.schemaName ? this.knex(this.tableName).withSchema(this.schemaName) : this.knex(this.tableName);
+    const knex = this.schemaName
+      ? this.knex(this.tableName).withSchema(this.schemaName)
+      : this.knex(this.tableName);
     const res = await knex.where(this.idColumn, id);
     return res[0] ? this.build(res[0]) : null;
   }
 
   override async findMany(ids: (string | number)[]): Promise<BaseRecord[]> {
-    const knex = this.schemaName ? this.knex(this.tableName).withSchema(this.schemaName) : this.knex(this.tableName);
+    const knex = this.schemaName
+      ? this.knex(this.tableName).withSchema(this.schemaName)
+      : this.knex(this.tableName);
     const res = await knex.whereIn(this.idColumn, ids);
     return res.map((r) => this.build(r));
   }
@@ -116,7 +124,9 @@ export class Resource extends BaseResource {
   }
 
   override async create(params: Record<string, any>): Promise<ParamsType> {
-    const knex = this.schemaName ? this.knex(this.tableName).withSchema(this.schemaName) : this.knex(this.tableName);
+    const knex = this.schemaName
+      ? this.knex(this.tableName).withSchema(this.schemaName)
+      : this.knex(this.tableName);
     await knex.insert(params);
 
     return params;
@@ -126,25 +136,30 @@ export class Resource extends BaseResource {
     id: string,
     params: Record<string, any>,
   ): Promise<ParamsType> {
-    const knex = this.schemaName ? this.knex.withSchema(this.schemaName) : this.knex;
+    const knex = this.schemaName
+      ? this.knex.withSchema(this.schemaName)
+      : this.knex;
 
-    await knex
-      .from(this.tableName)
-      .update(params)
-      .where(this.idColumn, id);
+    await knex.from(this.tableName).update(params).where(this.idColumn, id);
 
-    const knexQb = this.schemaName ? this.knex(this.tableName).withSchema(this.schemaName) : this.knex(this.tableName);
+    const knexQb = this.schemaName
+      ? this.knex(this.tableName).withSchema(this.schemaName)
+      : this.knex(this.tableName);
     const [row] = await knexQb.where(this.idColumn, id);
     return row;
   }
 
   override async delete(id: string): Promise<void> {
-    const knex = this.schemaName ? this.knex.withSchema(this.schemaName) : this.knex;
+    const knex = this.schemaName
+      ? this.knex.withSchema(this.schemaName)
+      : this.knex;
     await knex.from(this.tableName).delete().where(this.idColumn, id);
   }
 
   private filterQuery(filter: Filter | undefined): Knex.QueryBuilder {
-    const knex = this.schemaName ? this.knex(this.tableName).withSchema(this.schemaName) : this.knex(this.tableName);
+    const knex = this.schemaName
+      ? this.knex(this.tableName).withSchema(this.schemaName)
+      : this.knex(this.tableName);
     const q = knex;
 
     if (!filter) {
@@ -154,8 +169,17 @@ export class Resource extends BaseResource {
     const { filters } = filter;
 
     Object.entries(filters ?? {}).forEach(([key, filter]) => {
-      if (typeof filter.value === 'object') {
+      if (
+        typeof filter.value === 'object'
+        && ['date', 'datetime'].includes(filter.property.type())
+      ) {
         q.whereBetween(key, [filter.value.from, filter.value.to]);
+      } else if (filter.property.type() === 'string') {
+        if (this.dialect === 'postgresql') {
+          q.whereILike(key, `%${filter.value}%`);
+        } else {
+          q.whereLike(key, `%${filter.value}%`);
+        }
       } else {
         q.where(key, filter.value);
       }

@@ -11,6 +11,7 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
+    'class-methods-use-this': 'off',
     'react/jsx-filename-extension': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     indent: ['error', 2],

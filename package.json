@@ -24,7 +24,8 @@
     "clean": "rimraf lib",
     "build": "tsc",
     "lint": "eslint './src/**/*.{ts,js}' --ignore-pattern 'build' --ignore-pattern 'yarn.lock'",
-    "release": "semantic-release"
+    "release": "semantic-release",
+    "test": "vitest"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.4.4",
@@ -47,9 +48,13 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
+    "@types/pg": "^8.11.4",
     "knex": "^2.4.2",
+    "kysely": "^0.27.3",
+    "kysely-codegen": "^0.14.1",
     "mysql2": "^3.3.3",
-    "pg": "^8.10.0"
+    "pg": "^8.11.3",
+    "vitest": "^1.4.0"
   },
   "peerDependencies": {
     "adminjs": "^7.0.0"

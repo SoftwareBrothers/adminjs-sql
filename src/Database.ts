@@ -17,4 +17,8 @@ export class Database extends BaseDatabase {
 
     return tables.map((metadata) => new Resource(metadata));
   }
+
+  resource(name: string): Resource {
+    return new Resource(this.info.table(name));
+  }
 }

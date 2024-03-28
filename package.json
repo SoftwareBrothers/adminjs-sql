@@ -24,15 +24,21 @@
     "clean": "rimraf lib",
     "build": "tsc",
     "lint": "eslint './src/**/*.{ts,js}' --ignore-pattern 'build' --ignore-pattern 'yarn.lock'",
-    "release": "semantic-release"
+    "release": "semantic-release",
+    "test": "npm run test-postgres run && npm run test-mysql run",
+    "test-postgres": "DIALECT=postgresql vitest",
+    "test-mysql": "DIALECT=mysql vitest"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.4.4",
     "@commitlint/config-conventional": "^17.4.4",
     "@semantic-release/git": "^10.0.1",
+    "@types/pg": "^8.11.4",
     "@typescript-eslint/eslint-plugin": "^5.55.0",
     "@typescript-eslint/parser": "^5.55.0",
+    "@vitest/coverage-istanbul": "^1.4.0",
     "adminjs": "^7.0.0",
+    "dotenv": "^16.4.5",
     "eslint": "^8.36.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-import": "^2.27.5",
@@ -44,12 +50,14 @@
     "semantic-release": "^20.1.3",
     "semantic-release-slack-bot": "^4.0.0",
     "ts-node": "^10.9.1",
-    "typescript": "^4.9.5"
+    "typescript": "^4.9.5",
+    "vitest": "^1.4.0"
   },
   "dependencies": {
     "knex": "^2.4.2",
+    "mysql": "^2.18.1",
     "mysql2": "^3.3.3",
-    "pg": "^8.10.0"
+    "pg": "^8.11.3"
   },
   "peerDependencies": {
     "adminjs": "^7.0.0"

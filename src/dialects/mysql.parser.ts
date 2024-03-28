@@ -94,6 +94,9 @@ const ensureType = (dataType: string, columnType: string): PropertyType => {
   case 'timestamp':
     return 'datetime';
 
+  case 'json':
+    return 'key-value';
+
   default:
     // eslint-disable-next-line no-console
     console.warn(

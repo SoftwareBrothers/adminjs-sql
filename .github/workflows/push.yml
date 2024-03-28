@@ -21,11 +21,48 @@ jobs:
       - name: Install
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install
-
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: postgres_user
+          POSTGRES_PASSWORD: postgres_password
+          POSTGRES_DB: test_database
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+      mysql:
+        image: mysql
+        env:
+          MYSQL_ROOT_PASSWORD: mysql_root_password
+          MYSQL_DATABASE: test_database
+          MYSQL_DEFAULT_USER: root
+          MYSQL_PASSWORD: mysql_password
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 3306:3306
   test:
     name: Test
     runs-on: ubuntu-latest
     needs: setup
+    env:
+        MYSQL_ROOT_PASSWORD: mysql_root_password
+        MYSQL_DATABASE: test_database
+        MYSQL_DEFAULT_USER: root
+        MYSQL_PASSWORD: mysql_password
+        MYSQL_HOST: postgres
+        POSTGRES_HOST: mysql
+        POSTGRES_USER: postgres_user
+        POSTGRES_PASSWORD: postgres_password
+        POSTGRES_DB: test_database
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -45,6 +82,10 @@ jobs:
         run: yarn install
       - name: Lint
         run: yarn lint
+      - name: 'Test MySql'
+        run: yarn test-mysql --coverage
+      - name: 'Test Postgres'
+        run: yarn test-postgres --coverage
  
   publish:
     name: Publish

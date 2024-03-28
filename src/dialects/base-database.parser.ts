@@ -1,16 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable class-methods-use-this */
-import type { Knex } from 'knex';
-import KnexModule from 'knex';
+import * as Knex from 'knex';
 
 import { DatabaseMetadata, ResourceMetadata } from '../metadata/index.js';
 
 import { ConnectionOptions, DatabaseDialect } from './types/index.js';
 
-const KnexConnection = KnexModule.knex;
-
 export class BaseDatabaseParser {
-  protected knex: Knex;
+  protected knex: Knex.Knex;
 
   protected dialect: DatabaseDialect;
 
@@ -26,7 +23,7 @@ export class BaseDatabaseParser {
       throw new Error('Please provide your database');
     }
 
-    const knex = KnexConnection({
+    const knex = Knex.knex({
       client: dialect,
       connection,
     });

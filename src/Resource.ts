@@ -1,21 +1,13 @@
-import {
-  BaseRecord,
-  BaseResource,
-  Filter,
-  ParamsType,
-  SupportedDatabasesType,
-} from 'adminjs';
+import { BaseRecord, BaseResource, Filter, ParamsType, SupportedDatabasesType } from 'adminjs';
 import type { Knex } from 'knex';
 
 import { ResourceMetadata } from './metadata/index.js';
 import { Property } from './Property.js';
 import { DatabaseDialect } from './dialects/index.js';
 
-export class Resource extends BaseResource {
-  static override isAdapterFor(resource: any): boolean {
-    return resource instanceof ResourceMetadata;
-  }
+type PrimaryKey = string | number
 
+export class Resource extends BaseResource {
   private knex: Knex;
 
   private dialect: DatabaseDialect;
@@ -46,13 +38,23 @@ export class Resource extends BaseResource {
     this.dialect = info.dialect;
   }
 
+  static override isAdapterFor(resource: any): boolean {
+    return resource instanceof ResourceMetadata;
+  }
+
   override databaseName(): string {
     return this._database;
   }
 
   // eslint-disable-next-line class-methods-use-this
   override databaseType(): SupportedDatabasesType | string {
-    return 'Postgres';
+    const dialectMap: Record<DatabaseDialect, SupportedDatabasesType> = {
+      mysql: 'MySQL',
+      mysql2: 'MySQL',
+      postgresql: 'Postgres',
+    };
+
+    return dialectMap[this.dialect];
   }
 
   override id(): string {
@@ -68,8 +70,8 @@ export class Resource extends BaseResource {
   }
 
   override async count(filter: Filter): Promise<number> {
-    const [r] = await this.filterQuery(filter).count('* as cnt');
-    return r.cnt;
+    const [r] = await this.filterQuery(filter).count('* as count');
+    return Number(r.count);
   }
 
   override async find(
@@ -97,7 +99,7 @@ export class Resource extends BaseResource {
     return rows.map((row) => new BaseRecord(row, this));
   }
 
-  override async findOne(id: string): Promise<BaseRecord | null> {
+  override async findOne(id: PrimaryKey): Promise<BaseRecord | null> {
     const knex = this.schemaName
       ? this.knex(this.tableName).withSchema(this.schemaName)
       : this.knex(this.tableName);
@@ -105,7 +107,7 @@ export class Resource extends BaseResource {
     return res[0] ? this.build(res[0]) : null;
   }
 
-  override async findMany(ids: (string | number)[]): Promise<BaseRecord[]> {
+  override async findMany(ids: PrimaryKey[]): Promise<BaseRecord[]> {
     const knex = this.schemaName
       ? this.knex(this.tableName).withSchema(this.schemaName)
       : this.knex(this.tableName);

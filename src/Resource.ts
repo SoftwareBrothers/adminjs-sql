@@ -13,13 +13,7 @@ import { DatabaseDialect } from './dialects/index.js';
 
 export class Resource extends BaseResource {
   static override isAdapterFor(resource: any): boolean {
-    const r = resource instanceof ResourceMetadata;
-
-    if (!r) {
-      throw new Error('Resource must contain valid metadata.');
-    }
-
-    return r;
+    return resource instanceof ResourceMetadata;
   }
 
   private knex: Knex;

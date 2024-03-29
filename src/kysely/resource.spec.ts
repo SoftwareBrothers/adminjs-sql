@@ -1,5 +1,6 @@
 import { BaseProperty, BaseRecord, Filter } from 'adminjs';
 import { beforeEach, describe, expect, it } from 'vitest';
+import { EnumCollection } from 'kysely-codegen/dist/core/enum-collection.js';
 
 import { buildPost, buildProfile, buildUser, testFixtures } from '../test/fixtures.js';
 
@@ -14,8 +15,15 @@ describe('Resource', () => {
       expect(Resource.isAdapterFor({
         _kind: RESOURCE_SYMBOL,
         db: fixtures.db,
-        introspection: fixtures.adapter.info.introspection,
-        table: fixtures.adapter.info.introspection.tables[0],
+        introspection: {
+          tables: [],
+          enums: new EnumCollection(),
+        },
+        table: {
+          name: 'user',
+          columns: [],
+          schema: 'public',
+        },
       }))
         .toEqual(true);
     });

@@ -12,7 +12,7 @@ describe('adapter', () => {
   const db: Kysely<TestDb> = createDatabase();
 
   beforeEach(() => {
-    adapter = new Adapter(db, {
+    adapter = new Adapter('postgres', {
       connectionString: `postgres://${config.user}:${config.password}@${config.host}:${config.port}/${config.database}`,
     });
   });
@@ -24,7 +24,7 @@ describe('adapter', () => {
   it('should fetch tables', async () => {
     await adapter.init();
 
-    expect(adapter.info.introspection.tables)
+    expect(adapter.database?.info.introspection.tables)
       .toMatchSnapshot();
   });
 

@@ -14,7 +14,6 @@ describe('database', () => {
     expect(
       Database.isAdapterFor({
         _kind: DATABASE_SYMBOL,
-        connectionString: '',
         db: fixtures.db,
         introspection: {
           enums: new EnumCollection(),

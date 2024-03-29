@@ -22,7 +22,7 @@ export const testFixtures = () => {
   };
 
   beforeAll(async () => {
-    testObjects.adapter = new Adapter(db, {
+    testObjects.adapter = new Adapter('postgres', {
       connectionString: `postgres://${config.user}:${config.password}@${config.host}:${config.port}/${config.database}`,
     });
 

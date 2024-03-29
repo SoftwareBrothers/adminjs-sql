@@ -18,7 +18,6 @@ export type Introspection = {
 
 export type DatabaseInformation = {
   _kind: symbol;
-  connectionString: string;
   db: Kysely<any>;
   introspection: Introspection;
 }

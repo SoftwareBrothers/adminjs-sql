@@ -1,5 +1,5 @@
 import pg from 'pg';
-import { CamelCasePlugin, Kysely, PostgresDialect, sql } from 'kysely';
+import { Kysely, PostgresDialect, sql } from 'kysely';
 
 import { TestDb } from './types.js';
 
@@ -14,12 +14,7 @@ export function createDatabase() {
   });
 
   const dialect = new PostgresDialect({ pool });
-  const db = new Kysely<TestDb>({
-    dialect,
-    plugins: [new CamelCasePlugin()],
-  }).withSchema('public');
-
-  return db;
+  return new Kysely<TestDb>({ dialect }).withSchema('public');
 }
 
 export async function setupDatabase(db: Kysely<TestDb>) {

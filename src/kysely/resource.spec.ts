@@ -1,6 +1,6 @@
 import { BaseProperty, BaseRecord, Filter } from 'adminjs';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { EnumCollection } from 'kysely-codegen/dist/core/enum-collection.js';
+import { EnumCollection } from 'kysely-codegen';
 
 import { buildPost, buildProfile, buildUser, testFixtures } from '../test/fixtures.js';
 

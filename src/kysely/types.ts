@@ -1,6 +1,5 @@
 import { Kysely } from 'kysely';
-import { ColumnMetadata, TableMetadata } from 'kysely-codegen';
-import type { EnumCollection } from 'kysely-codegen/dist/core/enum-collection.js';
+import { ColumnMetadata, TableMetadata, EnumCollection } from 'kysely-codegen';
 
 export type FindOptions = {
   limit?: number;

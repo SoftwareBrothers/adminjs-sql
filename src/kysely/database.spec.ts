@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { BaseResource } from 'adminjs';
-import { EnumCollection } from 'kysely-codegen/dist/core/enum-collection.js';
+import { EnumCollection } from 'kysely-codegen';
 
 import { testFixtures } from '../test/fixtures.js';
 

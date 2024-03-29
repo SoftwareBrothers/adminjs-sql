@@ -1,8 +1,12 @@
 import { BaseResource } from 'adminjs';
 import { Kysely } from 'kysely';
-import { ConnectionStringParser, DialectManager, DialectName } from 'kysely-codegen';
-import { ParsedConnectionString } from 'kysely-codegen/dist/core/connection-string-parser.js';
-import type { DatabaseMetadata } from 'kysely-codegen/dist/core/index.js';
+import {
+  ConnectionStringParser,
+  DatabaseMetadata,
+  DialectManager,
+  DialectName,
+  ParsedConnectionString,
+} from 'kysely-codegen';
 
 import { Database } from './database.js';
 import { DATABASE_SYMBOL } from './types.js';

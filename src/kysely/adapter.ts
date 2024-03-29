@@ -5,11 +5,9 @@ import { ParsedConnectionString } from 'kysely-codegen/dist/core/connection-stri
 import type { DatabaseMetadata } from 'kysely-codegen/dist/core/index.js';
 
 import { Database } from './database.js';
-import { DATABASE_SYMBOL, DatabaseInformation } from './types.js';
+import { DATABASE_SYMBOL } from './types.js';
 
 export class Adapter {
-  info: DatabaseInformation;
-
   database?: Database;
 
   connection: ParsedConnectionString;

@@ -7,14 +7,20 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     env_file:
-      - ./.env
+      - ./test.env
     ports:
       - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
 
   postgres:
-    image: postgres:latest
+    build:
+      dockerfile: ./docker/postgres/Dockerfile
+      context: .
     restart: always
     env_file:
-      - ./.env
+      - ./test.env
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]

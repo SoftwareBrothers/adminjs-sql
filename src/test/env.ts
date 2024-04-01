@@ -16,12 +16,13 @@ type Env = {
     POSTGRES_HOST: string
     POSTGRES_PASSWORD: string
     POSTGRES_USER: string
+    POSTGRES_SCHEMA: string
 }
 
 export const getEnv = (): Env => {
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
   const config = configDotenv({
-    path: [path.join(__dirname, '../../.env')],
+    path: [path.join(__dirname, '../../test.env')],
   });
 
   return {

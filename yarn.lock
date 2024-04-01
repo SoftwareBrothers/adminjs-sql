@@ -6054,10 +6054,10 @@ kind-of@^6.0.2, kind-of@^6.0.3:
   resolved "https://registry.npmjs.org/kind-of/-/kind-of-6.0.3.tgz"
   integrity sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==
 
-knex@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/knex/-/knex-3.1.0.tgz#b6ddd5b5ad26a6315234a5b09ec38dc4a370bd8c"
-  integrity sha512-GLoII6hR0c4ti243gMs5/1Rb3B+AjwMOfjYm97pu0FOQa7JH56hgBxYf5WK2525ceSbBY1cjeZ9yk99GPMB6Kw==
+knex@^2.4.2:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/knex/-/knex-2.5.1.tgz#a6c6b449866cf4229f070c17411f23871ba52ef9"
+  integrity sha512-z78DgGKUr4SE/6cm7ku+jHvFT0X97aERh/f0MUKAKgFnwCYBEW4TFBqtHWFYiJFid7fMrtpZ/gxJthvz5mEByA==
   dependencies:
     colorette "2.0.19"
     commander "^10.0.0"
@@ -6068,7 +6068,7 @@ knex@^3.1.0:
     getopts "2.3.0"
     interpret "^2.2.0"
     lodash "^4.17.21"
-    pg-connection-string "2.6.2"
+    pg-connection-string "2.6.1"
     rechoir "^0.8.0"
     resolve-from "^5.0.0"
     tarn "^3.0.2"
@@ -7677,7 +7677,12 @@ pg-cloudflare@^1.1.1:
   resolved "https://registry.npmjs.org/pg-cloudflare/-/pg-cloudflare-1.1.1.tgz"
   integrity sha512-xWPagP/4B6BgFO+EKz3JONXv3YDgvkbVrGw2mTo3D6tVDQRh1e7cqVGvyR3BE+eQgAvx1XhW/iEASj4/jCWl3Q==
 
-pg-connection-string@2.6.2, pg-connection-string@^2.6.2:
+pg-connection-string@2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/pg-connection-string/-/pg-connection-string-2.6.1.tgz#78c23c21a35dd116f48e12e23c0965e8d9e2cbfb"
+  integrity sha512-w6ZzNu6oMmIzEAYVw+RLK0+nqHPt8K3ZnknKi+g48Ak2pr3dtljJW3o+D/n2zzCG07Zoe9VOX3aiKpj+BN0pjg==
+
+pg-connection-string@^2.6.2:
   version "2.6.2"
   resolved "https://registry.npmjs.org/pg-connection-string/-/pg-connection-string-2.6.2.tgz"
   integrity sha512-ch6OwaeaPYcova4kKZ15sbJ2hKb/VP48ZD2gE7i1J+L4MspCtBMAx8nMgz7bksc7IojCIIWuEhHibSMFH8m8oA==

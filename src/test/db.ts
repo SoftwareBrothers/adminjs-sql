@@ -41,12 +41,13 @@ export const getDatabaseConfig = (): DatabaseConfig => {
       client: 'mysql2',
       database: env.MYSQL_DATABASE,
       databaseType: 'MySQL',
-      dialect: 'mysql',
+      dialect: 'mysql2',
       host: env.MYSQL_HOST,
       password: env.MYSQL_ROOT_PASSWORD,
       port: 3306,
       schema: env.MYSQL_DATABASE,
       user: env.MYSQL_DEFAULT_USER,
+      charset: 'utf8',
     };
   default:
     throw new Error(`Unknown database dialect: ${env.DIALECT}`);
@@ -64,6 +65,7 @@ export const getDatabase = () => {
 export const createKnex = (databaseConfig: DatabaseConfig): Knex.Knex => Knex.knex({
   client: databaseConfig.client,
   connection: {
+    charset: databaseConfig.charset,
     database: databaseConfig.database,
     host: databaseConfig.host,
     password: databaseConfig.password,

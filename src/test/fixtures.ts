@@ -33,4 +33,5 @@ export const getAdapter = (config: DatabaseConfig) => new Adapter(config.dialect
   port: config.port,
   user: config.user,
   password: config.password,
+  charset: config.charset,
 });

@@ -7,6 +7,7 @@ export async function setup() {
     await setupDatabase(config, knex);
     await knex.destroy();
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error(error);
     process.exit(1);
   }

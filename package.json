@@ -33,7 +33,7 @@
     "@commitlint/cli": "^17.4.4",
     "@commitlint/config-conventional": "^17.4.4",
     "@semantic-release/git": "^10.0.1",
-    "@types/pg": "^8.11.4",
+    "@types/pg": "^8.10.0",
     "@typescript-eslint/eslint-plugin": "^5.55.0",
     "@typescript-eslint/parser": "^5.55.0",
     "@vitest/coverage-istanbul": "^1.4.0",
@@ -55,9 +55,8 @@
   },
   "dependencies": {
     "knex": "^2.4.2",
-    "mysql": "^2.18.1",
     "mysql2": "^3.3.3",
-    "pg": "^8.11.3"
+    "pg": "^8.10.0"
   },
   "peerDependencies": {
     "adminjs": "^7.0.0"

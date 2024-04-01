@@ -192,9 +192,8 @@ describe('Resource', () => {
     let profileResource;
 
     beforeEach(async () => {
-      user = await database.resource('post')
-        .create(buildUser);
-      profileResource = getResource('profile');
+      user = await database.resource('user').create(buildUser());
+      profileResource = await getResource('profile');
     });
 
     it('creates new resource', async () => {

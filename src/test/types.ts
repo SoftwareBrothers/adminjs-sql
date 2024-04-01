@@ -37,4 +37,5 @@ export type DatabaseConfig = {
     databaseType: SupportedDatabasesType
     schema: string;
     client: 'pg' | 'mysql2'
+    charset?: string;
 }

@@ -121,7 +121,7 @@ export class PostgresParser extends BaseDatabaseParser {
             this.connectionOptions.database,
             schemaName,
             tableName,
-            await this.getProperties(tableName),
+            await this.getProperties(tableName, schemaName),
           );
 
           return resourceMetadata;
@@ -137,7 +137,7 @@ export class PostgresParser extends BaseDatabaseParser {
     return resources.filter(Boolean) as ResourceMetadata[];
   }
 
-  public async getProperties(table: string) {
+  public async getProperties(table: string, schemaName: string) {
     const query = this.knex
       .from('information_schema.columns as col')
       .select(
@@ -156,7 +156,7 @@ export class PostgresParser extends BaseDatabaseParser {
         .on('tco.constraint_name', 'kcu.constraint_name')
         .on('tco.constraint_schema', 'kcu.constraint_schema')
         .onVal('tco.constraint_type', 'PRIMARY KEY'))
-      .where('col.table_schema', 'public')
+      .where('col.table_schema', schemaName)
       .where('col.table_name', table);
 
     const columns = await query;

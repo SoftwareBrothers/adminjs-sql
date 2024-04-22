@@ -52,7 +52,7 @@ export class BaseDatabaseParser {
     throw new Error('Implement "getResources" method for your database parser!');
   }
 
-  public async getProperties(table: string): Promise<any[]> {
+  public async getProperties(table: string, schemaName: string): Promise<any[]> {
     throw new Error('Implement "getProperties" method for your database parser!');
   }
 }

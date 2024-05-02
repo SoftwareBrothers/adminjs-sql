@@ -168,7 +168,7 @@ export class Resource extends BaseResource {
         && ['date', 'datetime'].includes(filter.property.type())
       ) {
         q.whereBetween(key, [filter.value.from, filter.value.to]);
-      } else if (filter.property.type() === 'string' && !filter.property.availableValues) {
+      } else if (filter.property.type() === 'string' && !filter.property.availableValues()) {
         if (this.dialect === 'postgresql') {
           q.whereILike(key, `%${filter.value}%`);
         } else {

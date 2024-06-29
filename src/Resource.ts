@@ -4,6 +4,7 @@ import {
   Filter,
   ParamsType,
   SupportedDatabasesType,
+  ValidationError,
 } from 'adminjs';
 import type { Knex } from 'knex';
 
@@ -15,6 +16,8 @@ export class Resource extends BaseResource {
   static override isAdapterFor(resource: any): boolean {
     return resource instanceof ResourceMetadata;
   }
+
+  public static validate: any;
 
   private knex: Knex;
 
@@ -121,6 +124,9 @@ export class Resource extends BaseResource {
     const knex = this.schemaName
       ? this.knex(this.tableName).withSchema(this.schemaName)
       : this.knex(this.tableName);
+
+    await Resource.validateObject(this.tableName, params);
+
     await knex.insert(params);
 
     return params;
@@ -133,6 +139,8 @@ export class Resource extends BaseResource {
     const knex = this.schemaName
       ? this.knex.withSchema(this.schemaName)
       : this.knex;
+
+    await Resource.validateObject(this.tableName, params);
 
     await knex.from(this.tableName).update(params).where(this.idColumn, id);
 
@@ -180,5 +188,24 @@ export class Resource extends BaseResource {
     });
 
     return q;
+  }
+
+  static async validateObject(tableName: string, object: Record<string, any>): Promise<void> {
+    if (Resource.validate) {
+      const errors = await Resource.validate(tableName, object);
+      if (errors && errors.length) {
+        const validationErrors = errors.reduce(
+          (memo, error) => ({
+            ...memo,
+            [error.property]: {
+              type: Object.keys(error.constraints)[0],
+              message: Object.values(error.constraints)[0],
+            },
+          }),
+          {},
+        );
+        throw new ValidationError(validationErrors);
+      }
+    }
   }
 }

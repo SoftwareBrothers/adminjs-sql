@@ -24,6 +24,14 @@ import express from 'express'
 import Plugin from '@adminjs/express'
 import Adapter, { Database, Resource } from '@adminjs/sql'
 
+Resource.validate = async (tableName, params)=> {
+  // ...code
+  if(errors.length > 0){
+    return errors
+  }
+  return []
+}
+
 AdminJS.registerAdapter({
   Database,
   Resource,

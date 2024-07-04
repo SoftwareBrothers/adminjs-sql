@@ -85,6 +85,9 @@ export class PostgresParser extends BaseDatabaseParser {
   }
 
   public async getSchema() {
+    if (this.connectionOptions.schema) {
+      return this.connectionOptions.schema;
+    }
     const query = await this.knex.raw('SELECT current_schema() AS schema_name');
     const result = await query;
 

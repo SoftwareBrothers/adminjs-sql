@@ -4,6 +4,7 @@ This is an official AdminJS adapter for SQL databases. It does not require you t
 
 Supported databases:
 - PostgreSQL
+- MySQL
 - more coming soon
 
 This adapter is heavily inspired by [wirekang's adminjs-sql](https://github.com/wirekang/adminjs-sql) which is an unofficial adapter for a MySQL database.

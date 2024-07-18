@@ -9,7 +9,10 @@ const pgArrayAggToArray = (agg: string) => agg.replace(/{/g, '').replace(/}/g, '
 
 const getColumnType = (dbType: string): PropertyType => {
   switch (dbType) {
-  case 'uuid': return 'uuid';
+  case 'USER-DEFINED':
+    return 'mixed';
+  case 'uuid':
+    return 'uuid';
   case 'bigint':
   case 'int8':
   case 'bigserial':
@@ -57,17 +60,6 @@ const getColumnType = (dbType: string): PropertyType => {
     return 'string';
   }
 };
-
-const getColumnInfo = (column: Record<string, number | string>): ColumnInfo => ({
-  name: column.column_name as string,
-  isId: column.key_type === 'PRIMARY KEY',
-  position: column.ordinal_position as number,
-  defaultValue: column.column_default,
-  isNullable: column.is_nullable === 'YES',
-  isEditable: column.is_updatable === 'YES',
-  type: column.referenced_table ? 'reference' : getColumnType(column.data_type as string),
-  referencedTable: (column.referenced_table ?? null) as string | null,
-});
 
 export class PostgresParser extends BaseDatabaseParser {
   public static dialects = ['postgresql' as const];
@@ -177,7 +169,7 @@ export class PostgresParser extends BaseDatabaseParser {
 
     const relations = await relQuery;
 
-    return columns.map((col) => {
+    return Promise.all(columns.map(async (col) => {
       const rel = relations.rows.find((r) => {
         const cols = pgArrayAggToArray(r.col);
         if (cols.length > 1) return null; // AdminJS doesn't support multiple foreign keys
@@ -189,7 +181,35 @@ export class PostgresParser extends BaseDatabaseParser {
         col.referenced_table = rel.referenced_table;
       }
 
-      return new Property(getColumnInfo(col));
-    });
+      return new Property(await this.getColumnInfo(col));
+    }));
+  }
+
+
+  async getColumnInfo(column: Record<string, number | string>): Promise<ColumnInfo> {
+    return {
+      name: column.column_name as string,
+      isId: column.key_type === 'PRIMARY KEY',
+      position: column.ordinal_position as number,
+      defaultValue: column.column_default,
+      isNullable: column.is_nullable === 'YES',
+      isEditable: column.is_updatable === 'YES',
+      type: column.referenced_table ? ('reference' as PropertyType) : getColumnType(column.data_type as string),
+      referencedTable: (column.referenced_table ?? null) as string | null,
+      availableValues: await this.getAvailableValues(column),
+    }
+  }
+
+  async getAvailableValues(column: Record<string, number | string>): Promise<string[] | null> {
+    if (column.data_type !== 'USER-DEFINED' || !column.udt_name) {
+      return null;
+    }
+    const query = this.knex
+      .from('pg_catalog.pg_enum as e')
+      .select('e.enumlabel')
+      .leftJoin('pg_catalog.pg_type as t', (c) => c.on('e.enumtypid', 't.oid'))
+      .where('t.typname', column.udt_name);
+    const labels = await query;
+    return labels.map((l) => l.enumlabel as string)
   }
 }

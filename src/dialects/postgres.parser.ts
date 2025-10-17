@@ -171,7 +171,8 @@ export class PostgresParser extends BaseDatabaseParser {
         where attrelid = c.conrelid and ARRAY[attnum] <@ c.conkey) as col, 
         (select r.relname from pg_class r where r.oid = c.confrelid) as referenced_table
       from pg_constraint c
-      where c.conrelid = (select oid from pg_class where relname = '${table}')
+      where c.conrelid = (select oid from pg_class where relname = '${table}' and relnamespace = 
+        (select oid from pg_namespace where nspname = '${schemaName}'))
       and (select r.relname from pg_class r where r.oid = c.confrelid) is not null
     `);
 

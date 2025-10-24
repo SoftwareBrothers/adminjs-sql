@@ -163,8 +163,10 @@ export class Resource extends BaseResource {
     const { filters } = filter;
 
     Object.entries(filters ?? {}).forEach(([key, filter]) => {
-      if (
-        typeof filter.value === 'object'
+      if (filter.value === null) {
+        q.whereNull(key);
+      } else if (
+        typeof filter.value === 'object' 
         && ['date', 'datetime'].includes(filter.property.type())
       ) {
         q.whereBetween(key, [filter.value.from, filter.value.to]);
